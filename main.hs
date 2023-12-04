@@ -4,16 +4,30 @@ to a string of its textual representation, i.e. for financial documents.
 Write a function intToWords that transcribes an integer into its 
 textual representation in format "digit-digit-digit-...". 
 -}
+import Data.List (intersperse)
 
 intToWords :: (Num a, Show a) => a -> String
-intToWords x = -- ???
+intToWords x = concat $ intersperse "-" $ map digitToWord (show x)
+ where 
+   digitToWord '0' = "zero"
+   digitToWord '1' = "one"
+   digitToWord '2' = "two"
+   digitToWord '3' = "three"
+   digitToWord '4' = "four"
+   digitToWord '5' = "five"
+   digitToWord '6' = "six"
+   digitToWord '7' = "seven"
+   digitToWord '8' = "eight"
+   digitToWord '9' = "nine"
+   digitToWord '-' = "minus"
 
 problem1 = do
   print "Problem 1"
-  print $ intToWords  150  -- "one-five-zero"
-  print $ intToWords    0  -- "zero"
-  print $ intToWords (-10) -- "minus-one-zero"
+  print $ intToWords 150  
+  print $ intToWords 0  
+  print $ intToWords (-10) 
 
+{-
 {- PROBLEM 2
 Write a function findMaxFrequency that for a given homogenous list of type a
 returns a pair (a, Int) of the most frequent element (any, if there are more than one) and its frequecy. For an empty list throw an error. 
@@ -74,3 +88,4 @@ main = do
   problem1
   problem2
   problem3
+-}
