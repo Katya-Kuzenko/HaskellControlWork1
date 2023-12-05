@@ -4,7 +4,8 @@ to a string of its textual representation, i.e. for financial documents.
 Write a function intToWords that transcribes an integer into its 
 textual representation in format "digit-digit-digit-...". 
 -}
-import Data.List (intersperse)
+import Data.List (intersperse, group, sort, maximumBy)
+import Data.Function (on)
 
 intToWords :: (Num a, Show a) => a -> String
 intToWords x = concat $ intersperse "-" $ map digitToWord (show x)
@@ -27,14 +28,19 @@ problem1 = do
   print $ intToWords 0  
   print $ intToWords (-10) 
 
-{-
+
 {- PROBLEM 2
 Write a function findMaxFrequency that for a given homogenous list of type a
 returns a pair (a, Int) of the most frequent element (any, if there are more than one) and its frequecy. For an empty list throw an error. 
 -}
 
 findMaxFrequency :: (Ord a) => [a] -> (a, Int)
-findMaxFrequency lst = -- ???
+findMaxFrequency lst = if null lst
+                        then error "Empty lst"
+                        else maximumBy (compare `on` snd) $ couples lst
+                       where
+                        couples = map (\xs -> (head xs, length xs)) . group . sort
+
 
 problem2 = do
   print "Problem 2"
@@ -42,7 +48,8 @@ problem2 = do
   print $ findMaxFrequency [1,1,2,2]       -- (1, 2) or (2, 2)
   print $ findMaxFrequency "some sentence" -- ('e', 4)
   print $ findMaxFrequency ([] :: String)  -- error
-  
+
+{-  
 {- PROBLEM 3
 For a given system of types that represent a file system structure
 write a function search that given a name returns a list of all paths
