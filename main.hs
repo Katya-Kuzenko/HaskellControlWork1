@@ -47,7 +47,7 @@ problem2 = do
   print $ findMaxFrequency [1,2,1,3,1,4]   -- (1, 3)
   print $ findMaxFrequency [1,1,2,2]       -- (1, 2) or (2, 2)
   print $ findMaxFrequency "some sentence" -- ('e', 4)
-  print $ findMaxFrequency ([] :: String)  -- error
+  --print $ findMaxFrequency ([] :: String)  -- error
 
  
 {- PROBLEM 3
