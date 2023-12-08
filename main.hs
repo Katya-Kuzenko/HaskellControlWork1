@@ -62,7 +62,7 @@ data FSNode = File Name | Dir Name [FSNode]
 
 search :: Name -> FSNode -> [Path]
 
-search name root = map ("//" ++) (search' root)
+search name root = search' root
   where 
     search' :: FSNode -> [Path]
     search' (File fileName) =
@@ -70,8 +70,8 @@ search name root = map ("//" ++) (search' root)
         then [fileName]
         else []
     search' (Dir dirName subDir) = 
-      let sub = concatMap search' subDir
-      in map (dirName ++) sub ++ sub
+      let sub = concatMap (\xs -> search' xs) subDir
+      in map (\x -> dirName ++ "/" ++ x) sub
     
 
 root = Dir "/"
@@ -93,7 +93,7 @@ root = Dir "/"
     ]
   ]
 
--- правильно виводиться тільки останнє ;(
+-- тепер все правильно, але я в шоці з того, як я вмію тупити:)
 problem3 = do
   print "Problem 3"
   print $ search "file1" root -- ["//folder1/file1"]
