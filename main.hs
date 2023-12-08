@@ -49,7 +49,7 @@ problem2 = do
   print $ findMaxFrequency "some sentence" -- ('e', 4)
   print $ findMaxFrequency ([] :: String)  -- error
 
-{-  
+ 
 {- PROBLEM 3
 For a given system of types that represent a file system structure
 write a function search that given a name returns a list of all paths
@@ -61,7 +61,18 @@ type Path   = String
 data FSNode = File Name | Dir Name [FSNode]
 
 search :: Name -> FSNode -> [Path]
-search name root = -- ???
+
+search name root = map ("//" ++) (search' root)
+  where 
+    search' :: FSNode -> [Path]
+    search' (File fileName) =
+      if fileName == name
+        then [fileName]
+        else []
+    search' (Dir dirName subDir) = 
+      let sub = concatMap search' subDir
+      in map (dirName ++) sub ++ sub
+    
 
 root = Dir "/"
   [
@@ -82,6 +93,7 @@ root = Dir "/"
     ]
   ]
 
+-- правильно виводиться тільки останнє ;(
 problem3 = do
   print "Problem 3"
   print $ search "file1" root -- ["//folder1/file1"]
@@ -89,10 +101,7 @@ problem3 = do
   print $ search "file4" root -- ["//folder1/folder3/file4"]
   print $ search "file6" root -- []
 
--- please, make sure your code runs without errors
--- comment out unsolved tasks here
 main = do
   problem1
   problem2
   problem3
--}
